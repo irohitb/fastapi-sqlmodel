@@ -19,11 +19,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-
-class TestSettings(Settings):
-    class Config:
-        case_sensitive = True
-
-
-test_settings = TestSettings()

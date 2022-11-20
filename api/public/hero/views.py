@@ -3,7 +3,7 @@ from pydantic.types import List
 from sqlmodel import Session
 
 from api.database import get_session
-from api.public.hero.crud import (
+from api.public.hero.controller import (
     create_hero,
     delete_hero,
     read_hero,
