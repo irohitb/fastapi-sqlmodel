@@ -9,6 +9,7 @@ sqlmodel = "*"
 uvicorn = "*"
 asyncpg = "*"
 greenlet = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 black = "*"

@@ -18,7 +18,8 @@ router = APIRouter()
 
 @router.get("", response_model=List[Blog])
 def get_all_blogs(db: Session = Depends(get_session)):
-    return get_blogs(db)
+    result = get_blogs(db)
+    return result
 
 @router.get("/{blog_id}")
 def get_blog_post(blog_id:int, db: Session = Depends(get_session)):

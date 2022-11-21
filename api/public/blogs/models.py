@@ -10,7 +10,7 @@ class BlogBase(SQLModel):
 
 
 class Blog(BlogBase, table=True): 
-    id: int = Field(default=True, primary_key=True)
+    id: int = Field(default=None, primary_key=True)
 
 
 

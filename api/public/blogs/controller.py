@@ -1,5 +1,4 @@
-import select
-
+from sqlalchemy import select
 from api.public.blogs.models import Blog, BlogCreate
 from sqlmodel import Session
 from fastapi import Depends, HTTPException, status
@@ -15,8 +14,9 @@ def create_blog(blog: BlogCreate, session: Session = Depends(get_session)):
 
 
 def get_blogs(session:Session = Depends(get_session)):
-    result = session.execute(select(Blog)).scalars().all()
-    return result
+    result = session.execute(select(Blog))
+    blogs = result.scalars().all()
+    return blogs
 
 def get_blog(id: int, session:Session = Depends(get_session)):
     result = session.get(Blog, id)
