@@ -14,8 +14,5 @@ class Settings(BaseSettings):
     # DATABASE_URI: Optional[PostgresDsn] = None
     DATABASE_URI: str = os.environ.get("DATABASE_URL")  # sqlite tmp db just for test
 
-    class Config:
-        case_sensitive = True
-
 
 settings = Settings()
