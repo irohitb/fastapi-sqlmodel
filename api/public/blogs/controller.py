@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from api.public.blogs.models import Blog, BlogCreate
+from api.public.blogs.models import Blog, BlogCreate, BlogUpdate
 from sqlmodel import Session
 from fastapi import Depends, HTTPException, status
 from api.database import get_session
@@ -27,3 +27,14 @@ def get_blog(id: int, session:Session = Depends(get_session)):
         )
     return result
 
+def update_blog(id: int, blog: BlogUpdate, session:Session = Depends(get_session)): 
+    blog_db = get_blog(id, session)
+    blog_data = blog.dict(exclude_unset=True)
+    for key, value in blog_data.items():
+        setattr(blog_db, key, value)
+    session.add(blog_db)
+    session.commit()
+    session.refresh(blog_db)
+    return blog_db
+    
+    

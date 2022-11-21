@@ -6,7 +6,8 @@ from api.database import get_session
 from api.public.blogs.controller import (
     get_blogs,
     get_blog,
-    create_blog
+    create_blog,
+    update_blog
 )
 
 from api.public.blogs.models import (
@@ -32,6 +33,9 @@ def create_blog_post(blog: BlogCreate, db: Session = Depends(get_session)):
     return result
 
 
-
-
-
+@router.patch("/{blog_id}")
+def update_blog_content(blog_id: int, blog:BlogCreate, session:Session = Depends(get_session)):
+    new_blog = update_blog(blog_id, blog, session)
+    return new_blog
+    
+    
