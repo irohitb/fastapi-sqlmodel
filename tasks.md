@@ -1,7 +1,7 @@
-[ ]: One to one relationship
-[ ]: One to many relationship
-[ ]: Add Email Authenticator
-[ ]: Author foriegn key in blogs
+[x]: One to one relationship
+[x]: One to many relationship
+[x]: Add Email Authenticator
+[x]: Author foriegn key in blogs
 [ ]: Authentication
 [ ]: Comments
 [ ]: Proper test cases

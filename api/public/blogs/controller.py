@@ -3,7 +3,7 @@ from api.public.blogs.models import Blog, BlogCreate, BlogUpdate
 from sqlmodel import Session
 from fastapi import Depends, HTTPException, status
 from api.database import get_session
-
+from api.public.authors.models import Author
 
 def create_blog(blog: BlogCreate, session: Session = Depends(get_session)): 
     try:
@@ -32,7 +32,9 @@ def get_blogs(session:Session = Depends(get_session)):
     return blogs
 
 def get_blog(id: int, session:Session = Depends(get_session)):
-    result = session.get(Blog, id)
+    query = select(Blog, Author).where(Blog.id == id, Blog.id == Author.id)
+    response = session.exec(query)
+    result = response.all()
     if not result:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 

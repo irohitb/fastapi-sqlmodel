@@ -1,3 +1,4 @@
+from email_validator import validate_email, EmailNotValidError
 from sqlalchemy import select
 from api.public.authors.models import Author, AuthorCreate, AuthorUpdate
 from api.public.blogs.models import Blog
@@ -6,12 +7,21 @@ from fastapi import Depends, HTTPException, status
 from api.database import get_session
 
 
-def create_author(author: AuthorCreate, session: Session = Depends(get_session)): 
-    result = Author(name=author.name, email=author.email)
-    session.add(result)
-    session.commit()
-    session.refresh(result)
-    return result
+
+def create_author(author: AuthorCreate, session: Session = Depends(get_session)):
+    try:
+        emailObject = validate_email(author.email)
+        email = emailObject.email
+        result = Author(name=author.name, email=email)
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+        return result
+    except EmailNotValidError as errorMsg:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid Email"
+        )
 
 
 def get_authors(session:Session = Depends(get_session)):
@@ -21,7 +31,6 @@ def get_authors(session:Session = Depends(get_session)):
 
 def get_all_blogs_by_author(id: int, session:Session = Depends(get_session)): 
     query  = select(Author, Blog).where(Blog.author_id == id, Author.id == id)
-    print("==== Query =====", query)
     result = session.exec(query)
     response = result.all()
     return response
