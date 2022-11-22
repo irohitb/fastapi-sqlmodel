@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from api.public.authors.models import Author, AuthorCreate, AuthorUpdate
+from api.public.blogs.models import Blog
 from sqlmodel import Session
 from fastapi import Depends, HTTPException, status
 from api.database import get_session
@@ -17,6 +18,14 @@ def get_authors(session:Session = Depends(get_session)):
     result = session.execute(select(Author))
     authors = result.scalars().all()
     return authors
+
+def get_all_blogs_by_author(id: int, session:Session = Depends(get_session)): 
+    query  = select(Author, Blog).where(Blog.author_id == id, Author.id == id)
+    print("==== Query =====", query)
+    result = session.exec(query)
+    response = result.all()
+    return response
+ 
 
 def get_author(id: int, session:Session = Depends(get_session)):
     result = session.get(Author, id)

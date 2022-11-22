@@ -11,9 +11,9 @@ class AuthorBase(SQLModel):
 class AuthorCreate(AuthorBase):
     pass
 
-class Author():
+class Author(AuthorBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    blogs: List["Blog"] = Relationship(back_populates="Author")
+    email:str = Field(index=True)
 
 
 class AuthorUpdate(AuthorBase):

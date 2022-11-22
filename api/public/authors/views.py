@@ -7,7 +7,8 @@ from api.public.authors.controller import (
     get_authors,
     get_author,
     create_author,
-    update_author
+    update_author,
+    get_all_blogs_by_author
 )
 
 from api.public.authors.models import (
@@ -23,8 +24,14 @@ def get_all_authors(db: Session = Depends(get_session)):
     return result
 
 @router.get("/{author_id}")
-def get_author_post(author_id:int, db: Session = Depends(get_session)):
+def get_author_info(author_id:int, db: Session = Depends(get_session)):
     return get_author(author_id, db)
+
+@router.get("/{author_id}/posts")
+def get_author_with_blog_posts(author_id:int,  db: Session = Depends(get_session)):
+    result = get_all_blogs_by_author(author_id, db)
+    print("Result:------", result)
+    return result
 
 
 @router.post("/")

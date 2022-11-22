@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, exc
 from api.public.blogs.models import Blog, BlogCreate, BlogUpdate
 from sqlmodel import Session
 from fastapi import Depends, HTTPException, status
@@ -6,11 +6,24 @@ from api.database import get_session
 
 
 def create_blog(blog: BlogCreate, session: Session = Depends(get_session)): 
-    result = Blog(title=blog.title, body=blog.body)
-    session.add(result)
-    session.commit()
-    session.refresh(result)
+    try:
+        result = Blog(title=blog.title, body=blog.body, author_id=blog.author_id)
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+    except exc.IntegrityError: 
+        print("Exc Integrity", exc.IntegrityError)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"Author with {blog.author_id} not found"
+        )
+    except: 
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail=f"Something went wrong"
+        )
     return result
+
 
 
 def get_blogs(session:Session = Depends(get_session)):
