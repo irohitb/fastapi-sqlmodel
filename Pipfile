@@ -11,6 +11,9 @@ asyncpg = "*"
 greenlet = "*"
 psycopg2-binary = "*"
 email-validator = "1.1.3"
+pytest = "*"
+requests = "*"
+httpx = "*"
 
 [dev-packages]
 black = "*"

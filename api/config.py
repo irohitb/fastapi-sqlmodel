@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     VERSION: str = "1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
     # DATABASE_URI: Optional[PostgresDsn] = None
-    DATABASE_URI: str = os.environ.get("DATABASE_URL")  # sqlite tmp db just for test
+    DATABASE_URI: str = "postgresql://postgres:postgres@db:5432/blog"  # sqlite tmp db just for test
 
 
 settings = Settings()
